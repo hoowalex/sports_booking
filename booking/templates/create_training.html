@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="mb-4">
+            <h2 class="fw-bold" style="letter-spacing: -1px;">Нове заняття</h2>
+            <p class="text-muted small">Вкажіть назву, час та ліміт місць для вашої групи.</p>
+        </div>
+
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-uppercase text-muted" style="letter-spacing: 0.5px;">Назва тренування</label>
+                <input type="text" name="title"
+                       class="form-control form-control-lg border-0 bg-light"
+                       placeholder="Наприклад: Ранкова йога або Кросфіт"
+                       required
+                       style="font-size: 1rem; border-radius: 10px;">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-uppercase text-muted" style="letter-spacing: 0.5px;">Дата та час проведення</label>
+                <input type="datetime-local" name="date"
+                       class="form-control form-control-lg border-0 bg-light"
+                       required
+                       style="font-size: 1rem; border-radius: 10px;">
+            </div>
+
+            <div class="mb-5">
+                <label class="form-label small fw-bold text-uppercase text-muted" style="letter-spacing: 0.5px;">Максимальна кількість місць</label>
+                <input type="number" name="max_participants"
+                       class="form-control form-control-lg border-0 bg-light"
+                       placeholder="Наприклад: 15"
+                       value="15"
+                       min="1"
+                       required
+                       style="font-size: 1rem; border-radius: 10px;">
+                <div class="form-text small">Користувачі не зможуть записатися понад цей ліміт.</div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between pt-3">
+                <button type="submit" class="btn-custom px-5 py-2 shadow-sm">
+                    Опублікувати
+                </button>
+                <a href="{% url 'trainings' %}" class="text-muted small text-decoration-none fw-medium">
+                    Скасувати
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

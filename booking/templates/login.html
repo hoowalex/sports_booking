@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h4 class="mb-0 fw-bold">Вхід у систему</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Логін</label>
+                        <input type="text" name="username" class="form-control form-control-lg"
+                               placeholder="Ваше ім'я" required
+                               value="{{ form.username.value|default:'' }}">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Пароль</label>
+                        <input type="password" name="password" class="form-control form-control-lg"
+                               placeholder="••••••••" required>
+                    </div>
+                {% if form.errors or form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Помилка!</strong> Невірний логін або пароль.
+                    </div>
+                {% endif %}
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-sm">Увійти</button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="card-footer text-center bg-light py-3">
+                <small class="text-muted">Забули пароль? Зверніться до системного адміністратора.</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

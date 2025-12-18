@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="py-2">
+    <div class="row align-items-center mb-5 pb-4">
+        <div class="col-lg-7">
+            <h1 class="display-4 fw-bold mb-3" style="letter-spacing: -2px; line-height: 1.1;">
+                Простір для ваших <span style="color: var(--text-muted);">спортивних перемог</span>
+            </h1>
+            <p class="lead text-muted mb-4" style="max-width: 500px;">
+                Бронюйте тренування за лічені секунди. Актуальний розклад, професійні тренери та контроль вільних місць в одному додатку.
+            </p>
+
+            {% if user.is_authenticated %}
+                <div class="d-flex gap-3">
+                    <a href="{% url 'trainings' %}" class="btn-custom py-3 px-5 text-decoration-none shadow-sm d-inline-block">
+                        Перейти до розкладу
+                    </a>
+                </div>
+            {% else %}
+                <div class="d-flex gap-3">
+                    <a href="{% url 'login' %}" class="btn-custom py-3 px-5 text-decoration-none shadow-sm">
+                        Розпочати
+                    </a>
+                    <a href="#features" class="btn btn-outline py-3 px-4 shadow-sm border-secondary-subtle text-decoration-none border">
+                        Дізнатись більше
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-5 d-none d-lg-block text-end">
+            <div class="bg-light rounded-4 p-5 d-inline-block" style="border: 1px solid var(--border-color); background: linear-gradient(135deg, #ffffff 0%, #f1f3f5 100%);">
+                <div class="text-center p-3">
+                    <div class="display-1 mb-3">⚡</div>
+                    <div class="fw-bold h5 mb-0">SportBooking</div>
+                    <div class="text-muted small">Ваш комфортний запис</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="features" class="row g-4 py-5 border-top border-bottom mb-5">
+        <div class="col-md-4">
+            <div class="h-100 p-4 rounded-4 border-0 bg-light shadow-sm">
+                <div class="mb-3 text-dark h3">📅</div>
+                <h5 class="fw-bold">Гнучкий графік</h5>
+                <p class="small text-muted mb-0">Всі доступні заняття як на долоні. Обирайте зручний час самостійно.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="h-100 p-4 rounded-4 border-0 bg-light shadow-sm">
+                <div class="mb-3 text-dark h3">🛑</div>
+                <h5 class="fw-bold">Ліміт учасників</h5>
+                <p class="small text-muted mb-0">Система автоматично контролює кількість місць. Жодних переповнених залів.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="h-100 p-4 rounded-4 border-0 bg-light shadow-sm">
+                <div class="mb-3 text-dark h3">👤</div>
+                <h5 class="fw-bold">Мій кабінет</h5>
+                <p class="small text-muted mb-0">Керуйте записами та переглядайте історію відвіданих занять у профілі.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold m-0" style="letter-spacing: -1px;">Найближчі тренування</h3>
+            <a href="{% url 'trainings' %}" class="text-muted small fw-bold text-decoration-none">Дивитися всі →</a>
+        </div>
+
+        <div class="row">
+            {% for t in recent_trainings|slice:":3" %}
+                <div class="col-md-4 mb-3">
+                    <div class="p-3 border rounded-3 bg-white h-100 shadow-sm hover-shadow transition">
+                        <h6 class="fw-bold mb-1">{{ t.title }}</h6>
+                        <div class="text-muted small mb-2">📅 {{ t.date|date:"d.m" }} о {{ t.date|date:"H:i" }}</div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="small text-muted">👥 {{ t.participants.count }}/{{ t.max_participants }}</span>
+                            <a href="{% url 'trainings' %}" class="btn btn-sm btn-outline-dark py-1 px-3 border" style="font-size: 0.75rem;">Деталі</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center py-4 bg-light rounded-3 border">
+                    <p class="text-muted mb-0 small">На найближчий час занять не заплановано.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if not user.is_authenticated %}
+    <div class="mt-5 p-5 rounded-4 text-center border bg-dark text-white shadow-lg">
+        <h4 class="fw-bold mb-3">Готові розпочати?</h4>
+        <p class="text-white-50 mb-4">Створіть акаунт та отримайте доступ до бронювання тренувань.</p>
+        <a href="{% url 'login' %}" class="btn btn-light py-2 px-5 fw-bold text-decoration-none" style="border-radius: 8px;">Зареєструватися</a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Легкий ефект при наведенні на картки занять */
+    .transition { transition: all 0.3s ease; }
+    .hover-shadow:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+    }
+</style>
+{% endblock %}
